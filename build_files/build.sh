@@ -59,10 +59,13 @@ rpm-ostree install 1password 1password-cli
 # Clean up the yum repo (updates are baked into new images)
 rm /etc/yum.repos.d/1password.repo -f
 
+# Create /usr/local/lib directory
+mkdir -p /usr/local/lib
+
 # Move the installed application
 mv /var/opt/1Password /usr/local/lib/1Password
 
-# Create a symlink /usr/bin/1password => /opt/1Password/1password
+# Create needed symlinks
 rm /usr/bin/1password
 rm /usr/bin/1password-mcp
 rm /usr/local/lib/1Password/onepassword-mcp
