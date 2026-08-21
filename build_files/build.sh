@@ -66,12 +66,23 @@ mv /opt/1Password /usr/lib/1Password
 rm /usr/bin/1password
 rm /usr/bin/1password-mcp
 rm /usr/lib/1Password/onepassword-mcp
-ln -s /usr/lib/1Password/1password /usr/bin/
+ln -s /usr/lib/1Password/1password /usr/bin/o
 ln -s /usr/lib/1Password/1password-mcp /usr/bin/
 ln -s /usr/lib/1Password/1password-mcp /usr/lib/1Password/onepassword-mcp
 
 # Fix desktop file
-sed 's/\/opt\/1Password/\/usr\/lib\/1Password/' /usr/share/applications/1password.desktop > /usr/share/applications/1password.desktop
+cat << EOF > /usr/share/applications/1password.desktop
+[Desktop Entry]
+Name=1Password
+Exec=/usr/lib/1Password/1password %U
+Terminal=false
+Type=Application
+Icon=1password
+StartupWMClass=1Password
+Comment=Password manager and secure wallet
+MimeType=x-scheme-handler/onepassword;x-scheme-handler/onepassword8;
+Categories=Office;
+EOF
 
 # chrome-sandbox requires the setuid bit to be specifically set.
 # See https://github.com/electron/electron/issues/17972
