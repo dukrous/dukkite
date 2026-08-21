@@ -22,10 +22,6 @@ cp -avf "/ctx/system_files"/. /
 # Disable COPRs so they don't end up enabled on the final image:
 # dnf5 -y copr disable ublue-os/staging
 
-# Install 1Password
-rpm --import https://downloads.1password.com/linux/keys/1password.asc
-dnf5 install -y 1password
-
 # Install QEMU Tools
 dnf5 --setopt=install_weak_deps=False install -y \
     rocm-hip \
