@@ -36,8 +36,28 @@ echo "Installing 1Password"
 # Prepare staging directory
 mkdir -p /var/opt
 
+# Can be "beta" or "stable"
+RELEASE_CHANNEL="${ONEPASSWORD_RELEASE_CHANNEL:-stable}"
+
+# Setup repo
+cat << EOF > /etc/yum.repos.d/1password.repo
+[1password]
+name=1Password ${RELEASE_CHANNEL^} Channel
+baseurl=https://downloads.1password.com/linux/rpm/${RELEASE_CHANNEL}/\$basearch
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://downloads.1password.com/linux/keys/1password.asc
+EOF
+
+# Import signing key
+rpm --import https://downloads.1password.com/linux/keys/1password.asc
+
 # Install the packages.
 rpm-ostree install 1password 1password-cli
+
+# Clean up the yum repo (updates are baked into new images)
+rm /etc/yum.repos.d/1password.repo -f
 
 # Move the installed application
 mv /var/opt/1Password /usr/local/lib/1Password
