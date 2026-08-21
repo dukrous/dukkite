@@ -70,6 +70,9 @@ ln -s /usr/lib/1Password/1password /usr/bin/
 ln -s /usr/lib/1Password/1password-mcp /usr/bin/
 ln -s /usr/lib/1Password/1password-mcp /usr/lib/1Password/onepassword-mcp
 
+# Fix desktop file
+sed 's/\/opt\/1Password/\/usr\/lib\/1Password/' /usr/share/applications/1password.desktop > /usr/share/applications/1password.desktop
+
 # chrome-sandbox requires the setuid bit to be specifically set.
 # See https://github.com/electron/electron/issues/17972
 chmod 4755 /usr/lib/1Password/chrome-sandbox
@@ -114,7 +117,6 @@ EOF
 # They don't magically set the GID like we need them to.
 rm -f /usr/lib/sysusers.d/30-rpmostree-pkg-group-onepassword.conf
 rm -f /usr/lib/sysusers.d/30-rpmostree-pkg-group-onepassword-cli.conf
-
 
 # Register path symlink
 # We do this via tmpfiles.d so that it is created by the live system.
