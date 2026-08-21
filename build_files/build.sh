@@ -59,23 +59,20 @@ rpm-ostree install 1password 1password-cli
 # Clean up the yum repo (updates are baked into new images)
 rm /etc/yum.repos.d/1password.repo -f
 
-# Make /usr/local/lib 
-mkdir /usr/local/lib
-
 # Move the installed application
-mv /opt/1Password /usr/local/lib/1Password
+mv /opt/1Password /usr/lib/1Password
 
 # Create needed symlinks
 rm /usr/bin/1password
 rm /usr/bin/1password-mcp
-rm /usr/local/lib/1Password/onepassword-mcp
-ln -s /usr/local/lib/1Password/1password /usr/bin/
-ln -s /usr/local/lib/1Password/1password-mcp /usr/bin/
-ln -s /usr/local/lib/1Password/1password-mcp /usr/local/lib/1Password/onepassword-mcp
+rm /usr/lib/1Password/onepassword-mcp
+ln -s /usr/lib/1Password/1password /usr/bin/
+ln -s /usr/lib/1Password/1password-mcp /usr/bin/
+ln -s /usr/lib/1Password/1password-mcp /usr/lib/1Password/onepassword-mcp
 
 # chrome-sandbox requires the setuid bit to be specifically set.
 # See https://github.com/electron/electron/issues/17972
-chmod 4755 /usr/local/lib/1Password/chrome-sandbox
+chmod 4755 /usr/lib/1Password/chrome-sandbox
 
 # Normally, after-install.sh would create a group,
 # "onepassword", right about now. But if we do that during
@@ -95,7 +92,7 @@ GID_ONEPASSWORDCLI="1600"
 
 # BrowserSupport binary needs setgid. This gives no extra permissions to the binary.
 # It only hardens it against environmental tampering.
-BROWSER_SUPPORT_PATH="/usr/local/lib/1Password/1Password-BrowserSupport"
+BROWSER_SUPPORT_PATH="/usr/lib/1Password/1Password-BrowserSupport"
 
 chgrp "${GID_ONEPASSWORD}" "${BROWSER_SUPPORT_PATH}"
 chmod g+s "${BROWSER_SUPPORT_PATH}"
@@ -122,7 +119,7 @@ rm -f /usr/lib/sysusers.d/30-rpmostree-pkg-group-onepassword-cli.conf
 # Register path symlink
 # We do this via tmpfiles.d so that it is created by the live system.
 cat >/usr/lib/tmpfiles.d/onepassword.conf <<EOF
-L  /opt/1Password  -  -  -  -  /usr/local/lib/1Password
+L  /opt/1Password  -  -  -  -  /usr/lib/1Password
 EOF
 
 # Install QEMU Tools
