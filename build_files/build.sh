@@ -22,11 +22,6 @@ cp -avf "/ctx/system_files"/. /
 # Disable COPRs so they don't end up enabled on the final image:
 # dnf5 -y copr disable ublue-os/staging
 
-# Fix the annoying setuid issue for mounting CIFS drives
-sudo chmod u+s /bin/mount
-sudo chmod u+s /bin/umount
-sudo chmod u+s /usr/sbin/mount.cifs
-
 # Install 1Password
 echo "Installing 1Password"
 
